@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { days } from '../utils/DayEnum';
+
 @Component({
   selector: 'app-weather',
   templateUrl: './weather.component.html',
@@ -8,35 +10,49 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class WeatherComponent implements OnInit {
   city: string;
-  openWeatherMapApiKey: string = '9b258de3163f345fa8401ea91f6462e6';
-  darkSkyWeatherForecastApiKey: string = '65ef0280349d15c627c21c64833e88dd';
-  dailySummary: string;
+  todaysForecast: object;
+  summary: string;
+  forecasts: object;
   lat: number;
   lon: number;
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.city = 'Beaverton';
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     this.http
-      .get<any>(
-        `http://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=imperial&APPID=${this.openWeatherMapApiKey}`
-      )
-      .subscribe(openWeatherMapData => {
-        console.log(openWeatherMapData.coord);
-        this.lat = openWeatherMapData.coord.lat;
-        this.lon = openWeatherMapData.coord.lon;
+      .post<any>('/api/weather', JSON.stringify({ city: this.city }), {
+        headers: headers,
+        observe: 'response'
+      })
+      .subscribe(data => {
+        this.todaysForecast = data.body.weatherResults.current;
+        this.summary = data.body.weatherResults.dailyForecast.summary;
+        this.forecasts = data.body.weatherResults.dailyForecast.data;
       });
   }
 
-  getWeatherForecast() {
-    console.log('called');
-    this.http
-      .get<any>(
-        `https://api.darksky.net/forecast/${this.darkSkyWeatherForecastApiKey}/${this.lat},${this.lon}`
-      )
-      .subscribe(darkSkyWeatherData => {
-        console.log('dark:', darkSkyWeatherData);
-        this.dailySummary = darkSkyWeatherData.daily.summary;
-      });
+  getDay(time) {
+    return days[new Date(time * 1000).getDay()];
   }
+  isToday(today) {
+    return new Date(Date.now()).getDate() === new Date(today * 1000).getDate();
+  }
+
+  // make enum
+  weatherIcon(icon) {
+    switch (icon) {
+      case 'partly-cloudy-day':
+        return 'wi wi-day-cloudy';
+      case 'clear-day':
+        return 'wi wi-day-sunny';
+      case 'partly-cloudy-night':
+        return 'wi wi-night-partly-cloudy';
+      case 'rain':
+        return 'wi wi-day-rain';
+      default:
+        return `wi wi-day-sunny`;
+    }
+  }
+  getWeatherForecast() {}
 }

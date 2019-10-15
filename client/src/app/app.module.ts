@@ -7,14 +7,21 @@ import { AppComponent } from './app.component';
 import { TrimetComponent } from './trimet/trimet.component';
 import { RouterModule, Routes } from '@angular/router';
 import { WeatherComponent } from './weather/weather.component';
+import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
   { path: 'trimet', component: TrimetComponent },
-  { path: 'weather', component: WeatherComponent }
+  { path: 'weather', component: WeatherComponent },
+  { path: '', component: HomeComponent }
 ];
 
 @NgModule({
-  declarations: [AppComponent, TrimetComponent, WeatherComponent],
+  declarations: [
+    AppComponent,
+    TrimetComponent,
+    WeatherComponent,
+    HomeComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
