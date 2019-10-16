@@ -4,17 +4,19 @@
 
 $primary: rgb(111, 0, 255);
 
-body {
-  margin: 0;
-  font-family: 'Nunito', 'sans-serif';
-  font-size: 18px;
-}
-
 .container {
   width: 80%;
   margin: 0 auto;
 }
 
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
 header {
   background: $primary;
   padding: 1em 0;

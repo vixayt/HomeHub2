@@ -1,1 +1,14 @@
-<p>trimet works!</p>
+<mat-tab-group>
+  <div *ngFor="let stop of location; let i = index">
+    <mat-tab label="{{ stop.desc }}">
+      <div *ngFor="let arr of arrival">
+        <div *ngIf="arr.locid === stop.id">
+          <h3>
+            {{ arr.fullSign }}
+          </h3>
+          <p>Departing in: {{ getTime(arr.scheduled) }} minutes</p>
+        </div>
+      </div>
+    </mat-tab>
+  </div>
+</mat-tab-group>
