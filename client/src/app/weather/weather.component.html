@@ -4,26 +4,28 @@
     Forecast:
   </h3>
   <span> {{ summary }}</span>
-</div>
-<div #elseBlock>Loading...</div>
-<div *ngFor="let forecast of forecasts">
-  <div *ngIf="isToday(forecast.time); else TodayBlock">
-    <h3>
-      Today
-    </h3>
-    <i [class]="weatherIcon(forecast.icon)" title="{{ forecast.icon }}"></i>
-    <p>Current Temp: {{ todaysForecast.temperature }}</p>
-    <p>Feels Like: {{ todaysForecast.apparentTemperature }}</p>
-    <p>Low: {{ forecast.temperatureLow }}</p>
-    <p>High: {{ forecast.temperatureHigh }}</p>
-    <p>Summary: {{ forecast.summary }}</p>
-  </div>
-  <ng-template #TodayBlock>
-    <h3>{{ getDay(forecast.time) }}</h3>
-    <i [class]="weatherIcon(forecast.icon)" title="{{ forecast.icon }}"></i>
-    <p>Low: {{ forecast.temperatureLow }}</p>
-    <p>High: {{ forecast.temperatureHigh }}</p>
-    <p>Summary: {{ forecast.summary }}</p>
-  </ng-template>
+  <p>Current Temp: {{ todaysForecast.temperature }}</p>
+  <p>Feels Like: {{ todaysForecast.apparentTemperature }}</p>
 </div>
 <button (click)="getWeatherForecast()">Forecast</button>
+
+<div class="weather-scroll">
+  <div class="weather-card" *ngFor="let forecast of forecasts">
+    <div *ngIf="isToday(forecast.time); else TodayBlock">
+      <h3>
+        Today
+      </h3>
+      <i [class]="weatherIcon(forecast.icon)" title="{{ forecast.icon }}"></i>
+      <p>Low: {{ forecast.temperatureLow }}</p>
+      <p>High: {{ forecast.temperatureHigh }}</p>
+      <p>Summary: {{ forecast.summary }}</p>
+    </div>
+    <ng-template #TodayBlock>
+      <h3>{{ getDay(forecast.time) }}</h3>
+      <i [class]="weatherIcon(forecast.icon)" title="{{ forecast.icon }}"></i>
+      <p>Low: {{ forecast.temperatureLow }}</p>
+      <p>High: {{ forecast.temperatureHigh }}</p>
+      <p>Summary: {{ forecast.summary }}</p>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+.weather-card {
+  border-style: solid;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.weather-scroll {
+  overflow: auto;
+  white-space: nowrap;
+}
