@@ -4,6 +4,8 @@
 
 This web app allows users to see their weather forecast and see when MAX transit times will arrive.
 
+## How To run the is app
+
 ## Todo
 
 - Sign in

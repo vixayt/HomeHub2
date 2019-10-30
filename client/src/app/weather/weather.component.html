@@ -9,8 +9,8 @@
 </div>
 <button (click)="getWeatherForecast()">Forecast</button>
 
-<div class="weather-scroll">
-  <div class="weather-card" *ngFor="let forecast of forecasts">
+<ng-template class="weather-scroll">
+  <ng-template class="weather-card" *ngFor="let forecast of forecasts">
     <div *ngIf="isToday(forecast.time); else TodayBlock">
       <h3>
         Today
@@ -27,5 +27,5 @@
       <p>High: {{ forecast.temperatureHigh }}</p>
       <p>Summary: {{ forecast.summary }}</p>
     </ng-template>
-  </div>
-</div>
+  </ng-template>
+</ng-template>
