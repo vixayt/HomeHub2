@@ -54,5 +54,7 @@ export class WeatherComponent implements OnInit {
         return `wi wi-day-sunny`;
     }
   }
-  getWeatherForecast() {}
+  getWeatherForecast() {
+    console.log(this.forecasts);
+  }
 }
