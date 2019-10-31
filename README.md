@@ -13,6 +13,7 @@ First requirement is ensuring you have an API key from:
 - Trimet
 
   Ensure you have got a Node version (`node -v`) greater than v10.9.  
+  Ensure you also have `angular cli`. (npm install -g @angular/cli)
   Go into the `server` directory. If you run the command `npm run test-build`, this should install the packages and run both the frontend and the backend.
   After running this command, the web app should be running on localhost:4200/
 
@@ -21,3 +22,4 @@ First requirement is ensuring you have an API key from:
 - Sign in
 - Input zip code for weather
 - Input max lines for trimet
+- Set up nvm
