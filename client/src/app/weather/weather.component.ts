@@ -19,16 +19,17 @@ export class WeatherComponent implements OnInit {
 
   ngOnInit() {
     this.city = 'Beaverton';
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    // const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     this.http
-      .post<any>('/api/weather', JSON.stringify({ city: this.city }), {
-        headers: headers,
-        observe: 'response'
+      .get<any>('/api/weather', {
+        params: {
+          city: this.city
+        }
       })
       .subscribe(data => {
-        this.todaysForecast = data.body.weatherResults.current;
-        this.summary = data.body.weatherResults.dailyForecast.summary;
-        this.forecasts = data.body.weatherResults.dailyForecast.data;
+        this.todaysForecast = data.weatherData.current;
+        this.summary = data.weatherData.dailyForecast.summary;
+        this.forecasts = data.weatherData.dailyForecast.data;
       });
   }
 

@@ -1,29 +1,29 @@
-const request = require('request');
-const { openWeatherMapApiKey } = require('../envconfig');
+const axios = require('axios');
+const {
+  openWeatherMapApiKey,
+  darkSkyWeatherForecastApiKey
+} = require('../envconfig');
 
-const weatherAPI = (city, callback) => {
-  request(
-    {
-      url: `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&APPID=${openWeatherMapApiKey}`
-    },
-    (err, response, body) => {
-      if (err) {
-        callback('Unable to connect to server');
-      } else if (response.statusCode >= 200 && response.statusCode < 300) {
-        resBody = JSON.parse(body);
-        callback(undefined, {
-          currentTemperature: resBody.main.temp,
-          lat: resBody.coord.lat,
-          lon: resBody.coord.lon
-        });
-      } else {
-        callback(undefined, {
-          response: response.statusCode,
-          message: response.body.message
-        });
-      }
+const weatherAPI = async city => {
+  try {
+    const openWeatherResponse = await axios.get(
+      `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&APPID=${openWeatherMapApiKey}`
+    );
+    try {
+      const darkWeatherResponse = await axios.get(
+        `https://api.darksky.net/forecast/${darkSkyWeatherForecastApiKey}/${openWeatherResponse.data.coord.lat},${openWeatherResponse.data.coord.lon}`
+      );
+      return {
+        currentTemperature: openWeatherResponse.data.main.temp,
+        current: darkWeatherResponse.data.currently,
+        dailyForecast: darkWeatherResponse.data.daily
+      };
+    } catch (error) {
+      console.log('Dark Sky error', error);
     }
-  );
+  } catch (error) {
+    console.log('Open Weather error', error);
+  }
 };
 
 module.exports = weatherAPI;
