@@ -7,25 +7,44 @@
   <p>Current Temp: {{ todaysForecast.temperature }}</p>
   <p>Feels Like: {{ todaysForecast.apparentTemperature }}</p>
 </div>
+
 <button (click)="getWeatherForecast()">Forecast</button>
 
 <div class="weather-scroll">
   <div class="weather-card" *ngFor="let forecast of forecasts">
     <div *ngIf="isToday(forecast.time); else TodayBlock">
-      <h3>
-        Today
-      </h3>
-      <i [class]="weatherIcon(forecast.icon)" title="{{ forecast.icon }}"></i>
-      <p>Low: {{ forecast.temperatureLow }}</p>
-      <p>High: {{ forecast.temperatureHigh }}</p>
-      <p>Summary: {{ forecast.summary }}</p>
+      <mat-card class="todays-forecast">
+        <mat-card-header>
+          <h3>
+            Today
+          </h3>
+          <i
+            [class]="weatherIcon(forecast.icon)"
+            title="{{ forecast.icon }}"
+          ></i>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Low: {{ forecast.temperatureLow }}</p>
+          <p>High: {{ forecast.temperatureHigh }}</p>
+          <p>Summary: {{ forecast.summary }}</p>
+        </mat-card-content>
+      </mat-card>
     </div>
     <ng-template #TodayBlock>
-      <h3>{{ getDay(forecast.time) }}</h3>
-      <i [class]="weatherIcon(forecast.icon)" title="{{ forecast.icon }}"></i>
-      <p>Low: {{ forecast.temperatureLow }}</p>
-      <p>High: {{ forecast.temperatureHigh }}</p>
-      <p>Summary: {{ forecast.summary }}</p>
+      <mat-card class="weather-card">
+        <mat-card-header>
+          <h3>{{ getDay(forecast.time) }}</h3>
+          <i
+            [class]="weatherIcon(forecast.icon)"
+            title="{{ forecast.icon }}"
+          ></i>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Low: {{ forecast.temperatureLow }}</p>
+          <p>High: {{ forecast.temperatureHigh }}</p>
+          <p>Summary: {{ forecast.summary }}</p>
+        </mat-card-content>
+      </mat-card>
     </ng-template>
   </div>
 </div>
