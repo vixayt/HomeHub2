@@ -10,6 +10,7 @@ import { days } from '../utils/DayEnum';
 })
 export class WeatherComponent implements OnInit {
   city: string;
+  toSearch: string;
   todaysForecast: object;
   summary: string;
   forecasts: object;
@@ -19,16 +20,17 @@ export class WeatherComponent implements OnInit {
 
   ngOnInit() {
     this.city = 'Beaverton';
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    this.summary = null;
     this.http
-      .post<any>('/api/weather', JSON.stringify({ city: this.city }), {
-        headers: headers,
-        observe: 'response'
+      .get<any>('/api/weather', {
+        params: {
+          city: this.city
+        }
       })
       .subscribe(data => {
-        this.todaysForecast = data.body.weatherResults.current;
-        this.summary = data.body.weatherResults.dailyForecast.summary;
-        this.forecasts = data.body.weatherResults.dailyForecast.data;
+        this.todaysForecast = data.weatherData.current;
+        this.summary = data.weatherData.dailyForecast.summary;
+        this.forecasts = data.weatherData.dailyForecast.data;
       });
   }
 
@@ -55,6 +57,18 @@ export class WeatherComponent implements OnInit {
     }
   }
   getWeatherForecast() {
-    console.log(this.forecasts);
+    this.city = this.toSearch;
+    this.summary = null;
+    this.http
+      .get<any>('/api/weather', {
+        params: {
+          city: this.toSearch
+        }
+      })
+      .subscribe(data => {
+        this.todaysForecast = data.weatherData.current;
+        this.summary = data.weatherData.dailyForecast.summary;
+        this.forecasts = data.weatherData.dailyForecast.data;
+      });
   }
 }

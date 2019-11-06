@@ -9,6 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import {
@@ -67,6 +68,7 @@ var config = {
     BrowserAnimationsModule,
     MatTabsModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     AngularFireModule.initializeApp(config),
     AngularFireAuthModule,
     AngularFireAuthGuardModule

@@ -1,14 +1,24 @@
 <h1>Weather forecast for {{ city }}</h1>
-<div *ngIf="summary">
+<form>
+  City:
+  <input
+    type="text"
+    [(ngModel)]="toSearch"
+    [ngModelOptions]="{ standalone: true }"
+  />
+  <button (click)="getWeatherForecast()">Forecast</button>
+</form>
+
+<ng-container *ngIf="summary; else isSearching">
   <h3>
     Forecast:
   </h3>
   <span> {{ summary }}</span>
-  <p>Current Temp: {{ todaysForecast.temperature }}</p>
-  <p>Feels Like: {{ todaysForecast.apparentTemperature }}</p>
-</div>
-
-<button (click)="getWeatherForecast()">Forecast</button>
+  <p *ngIf="todaysForecast">Current Temp: {{ todaysForecast.temperature }}</p>
+  <p *ngIf="todaysForecast">
+    Feels Like: {{ todaysForecast.apparentTemperature }}
+  </p>
+</ng-container>
 
 <div class="weather-scroll">
   <div class="weather-card" *ngFor="let forecast of forecasts">
@@ -48,3 +58,8 @@
     </ng-template>
   </div>
 </div>
+
+<ng-template #isSearching>
+  <h3></h3>
+  <mat-spinner> </mat-spinner>
+</ng-template>
