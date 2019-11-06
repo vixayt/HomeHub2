@@ -6,7 +6,6 @@ const port = process.env.PORT || 3000;
 const dotenv = require('dotenv');
 
 const weatherAPI = require('./api/weather');
-const weather = require('./api/moarWeather');
 const trimetAPI = require('./api/trimet');
 
 const path = require('path');
@@ -14,24 +13,14 @@ const path = require('path');
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/api/weather', async (req, res) => {
-  weatherAPI(req.body.city, (errorMessage, results) => {
-    if (errorMessage) {
-      console.log(errorMessage);
-    } else {
-      weather.getWeather(
-        results.lat,
-        results.lon,
-        (errorMessage, weatherResults) => {
-          if (errorMessage) {
-            console.log(errorMessage);
-          } else {
-            res.status(200).send({ weatherResults });
-          }
-        }
-      );
-    }
-  });
+app.get('/api/weather', async (req, res) => {
+  try {
+    const weatherData = await weatherAPI(req.query.city);
+    res.status(200).send({ weatherData });
+  } catch (error) {
+    console.log('Weather Server Error');
+    res.status(500).send({ Error: 'Weater Server Error' });
+  }
 });
 
 app.get('/api/trimet', async (req, res) => {
