@@ -11,6 +11,7 @@ import { WeatherComponent } from './weather/weather.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const appRoutes: Routes = [
   { path: 'trimet', component: TrimetComponent },
@@ -31,7 +32,9 @@ const appRoutes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(appRoutes, { enableTracing: true }),
     BrowserAnimationsModule,
-    MatTabsModule
+    MatTabsModule,
+    FormsModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
