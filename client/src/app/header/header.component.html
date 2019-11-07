@@ -1,0 +1,25 @@
+<header>
+  <div class="container">
+    <a href="/" routerLink="/" class="logo">HomeHub</a>
+    <nav>
+      <ul>
+        <li><a routerLink="/weather">Weather</a></li>
+        <li><a routerLink="/trimet">Trimet</a></li>
+        <!-- Make "Home" Sign In/Sign Out -->
+        <li><a routerLink="/login" *ngIf="!isAuthenticated">Log In</a></li>
+        <li>
+          <a
+            style="cursor: pointer;"
+            *ngIf="isAuthenticated"
+            (click)="onLogout()"
+            >Log Out</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

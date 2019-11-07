@@ -1,28 +1,69 @@
-<div *ngIf="authService.user | async as user; else showLogin">
-  <h1>Hello {{ user.displayName }}!</h1>
-  <button (click)="logout()">Logout</button>
+<div>
+  <div *ngIf="!isLoading">
+    <p>{{ isLoginMode ? 'Log In' : 'Register' }}</p>
+    <form
+      #authForm="ngForm"
+      (ngSubmit)="loginButton(authForm)"
+      *ngIf="!isLoading"
+    >
+      <input
+        type="text"
+        id="email"
+        class="form-control"
+        name="email"
+        ngModel
+        email
+        required
+        placeholder="Email"
+      />
+      <input
+        type="text"
+        id="firstName"
+        class="form-control"
+        name="firstName"
+        ngModel
+        required
+        placeholder="First Name"
+        *ngIf="!isLoginMode"
+      />
+      <input
+        type="text"
+        id="lastName"
+        class="form-control"
+        name="lastName"
+        ngModel
+        required
+        placeholder="Last Name"
+        *ngIf="!isLoginMode"
+      />
+      <input
+        type="password"
+        id="password"
+        class="form-control"
+        ngModel
+        name="password"
+        placeholder="Password"
+        required
+        minlength="6"
+      />
+      <div>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="!authForm.valid"
+        >
+          {{ isLoginMode ? 'Log In' : 'Register' }}
+        </button>
+        <button class="btn btn-primary" type="button" (click)="switchMode()">
+          {{ isLoginMode ? 'Switch to Register' : 'Switch to Log In' }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
-<ng-template #showLogin>
-  <p>Login</p>
-  <form>
-    <input
-      type="text"
-      placeholder="Email"
-      required
-      autofocus
-      [(ngModel)]="email"
-      [ngModelOptions]="{ standalone: true }"
-    />
-    <input
-      type="password"
-      placeholder="Password"
-      required
-      [(ngModel)]="password"
-      [ngModelOptions]="{ standalone: true }"
-    />
-    <button (click)="login()">Login</button>
-  </form>
-</ng-template>
 <div *ngIf="errorMessage" class="error-message" style="color: red">
   {{ errorMessage }}
+</div>
+<div *ngIf="isLoading" style="text-align: center;">
+  <app-loading-spinner></app-loading-spinner>
 </div>
