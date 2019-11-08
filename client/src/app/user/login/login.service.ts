@@ -5,6 +5,8 @@ import { NgForm } from '@angular/forms';
 import { from, Observable, BehaviorSubject } from 'rxjs';
 import { UserModel } from '../user.model';
 import { Router } from '@angular/router';
+import { JwtHelperService } from "@auth0/angular-jwt";
+import { unescapeIdentifier } from '@angular/compiler';
 
 interface UserMetaData {
   creationTime: string;
@@ -57,6 +59,7 @@ export interface UserCredential {
 @Injectable({ providedIn: 'root' })
 export class LoginService {
   user = new BehaviorSubject<UserModel>(null);
+  helper = new JwtHelperService();
 
   constructor(
     private authService: AngularFireAuth,
@@ -79,9 +82,11 @@ export class LoginService {
             lastName,
             id
           });
-          const user = new UserModel(email, firstName, lastName);
-          console.log(user);
-          this.user.next(user);
+          const helper = JSON.parse(JSON.stringify(this.authService.auth.currentUser));
+          const myRawToken = helper.stsTokenManager.accessToken;
+          const expirationDate = new Date(this.helper.getTokenExpirationDate(myRawToken)).getTime();
+          const uid = helper.uid;
+          this.handleAuthentication(email, uid, expirationDate, firstName, lastName);
           return result;
         })
         .catch(error => {
@@ -90,31 +95,55 @@ export class LoginService {
     );
   }
 
+  autoLogin() {
+    const userData: {
+      email: string;
+      uid: string;
+      _tokenExpirationDate: number;
+      firstName?: string;
+      lastName?: string;
+    } = JSON.parse(localStorage.getItem('userData'));
+    if (!userData) {
+      return;
+    }
+
+    const loadedUser = new UserModel(
+      userData.email, 
+      userData.uid,
+      new Date(userData._tokenExpirationDate), 
+      userData.firstName, 
+      userData.lastName 
+    );
+    if (loadedUser.uid) {
+      this.user.next(loadedUser)
+    }
+  }
+
   login(form: NgForm): Observable<UserCredential> {
+    const email = form.value.email;
+    const helper = JSON.parse(JSON.stringify(this.authService.auth.currentUser));
+    const myRawToken = helper.stsTokenManager.accessToken;
+    const uid = helper.uid;
+    const expirationDate = new Date(this.helper.getTokenExpirationDate(myRawToken)).getTime();
+    // const isExpired = this.helper.isTokenExpired(myRawToken);
+    
     return from(
       this.authService.auth
-        .signInWithEmailAndPassword(form.value.email, form.value.password)
+        .signInWithEmailAndPassword(email, form.value.password)
         .then(result => {
-          const user = new UserModel(form.value.email);
-          this.user.next(user);
+          this.handleAuthentication(email, uid, expirationDate);
           return result;
         })
         .catch(error => {
           return error;
         })
     );
-    // const data = this.angularFirestore.firestore
-    //   .collection('User')
-    //   .get()
-    //   .then(querySnapshot => {
-    //     querySnapshot.forEach(doc => {
-    //       if (doc.data().email === form.value.email) {
-    //         const email = doc.data().email;
-    //         const firstName = doc.data().firstName;
-    //         const lastName = doc.data().lastName;
-    //       }
-    //     });
-    //   });
+  }
+
+  private handleAuthentication(email: string, uid: string, expirationDate: number, firstName?: string, lastName?: string) {
+    const user = new UserModel(email, uid, new Date(expirationDate), firstName, lastName);
+    this.user.next(user);
+    localStorage.setItem('userData', JSON.stringify(user))
   }
 
   logout() {
