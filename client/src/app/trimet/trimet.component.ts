@@ -14,7 +14,6 @@ export class TrimetComponent implements OnInit {
   ngOnInit() {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     this._http.get<any>('/api/trimet').subscribe(data => {
-      console.log('dataBe: ', data);
       this.arrival = data.trimetData.arrival;
       this.location = data.trimetData.location;
     });
