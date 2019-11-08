@@ -9,31 +9,28 @@ import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import {
   AngularFireAuthGuard,
   AngularFireAuthGuardModule
 } from '@angular/fire/auth-guard';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { WeatherComponent } from './weather/weather.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './user/login/login.component';
-import { RegisterComponent } from './user/register/register.component';
-import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
-import { VerifyEmailComponent } from './user/verify-email/verify-email.component';
+import { LoadingSpinnerComponent } from './utils/loading-spinner/loading-spinner.component';
+import { HeaderComponent } from './header/header.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AngularFireAuthGuard] },
   {
     path: 'trimet',
-    component: TrimetComponent,
-    canActivate: [AngularFireAuthGuard]
+    component: TrimetComponent
   },
   {
     path: 'weather',
-    component: WeatherComponent,
-    canActivate: [AngularFireAuthGuard]
+    component: WeatherComponent
   },
   { path: 'login', component: LoginComponent }
 ];
@@ -55,23 +52,22 @@ var config = {
     WeatherComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent,
-    ForgotPasswordComponent,
-    VerifyEmailComponent
+    LoadingSpinnerComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes, { enableTracing: true }),
+    RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
     MatTabsModule,
     MatCardModule,
-    MatProgressSpinnerModule,
     AngularFireModule.initializeApp(config),
     AngularFireAuthModule,
-    AngularFireAuthGuardModule
+    AngularFireAuthGuardModule,
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

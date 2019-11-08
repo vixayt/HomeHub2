@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { NgForm } from '@angular/forms';
+import { UserModel } from '../user.model';
+import { Observable, Subject } from 'rxjs';
+import { Router } from '@angular/router';
+import { LoginService, UserCredential } from './login.service';
 
 @Component({
   selector: 'app-login',
@@ -7,25 +11,46 @@ import { AngularFireAuth } from '@angular/fire/auth';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  email: string = null;
-  password: string = null;
   errorMessage: string = null;
+  isLoginMode: boolean = true;
+  isLoading: boolean = false;
+  currentUser: UserModel;
 
-  constructor(private authService: AngularFireAuth) {}
-  login() {
-    this.authService.auth
-      .signInWithEmailAndPassword(this.email, this.password)
-      .then(result => {
-        this.errorMessage = null;
-        console.log('Successfully Logged in');
-        console.log(result);
-      })
-      .catch(err => {
-        this.errorMessage = err;
-      });
+  constructor(private loginService: LoginService, private router: Router) {}
+
+  loginButton(form: NgForm) {
+    this.isLoading = true;
+    this.errorMessage = null;
+    if (!form.valid) {
+      return;
+    }
+
+    let authObs: Observable<UserCredential>;
+
+    if (this.isLoginMode) {
+      authObs = this.loginService.login(form);
+    } else {
+      authObs = this.loginService.signup(form);
+    }
+
+    authObs.subscribe(resData => {
+      this.isLoading = false;
+      if (resData.message) {
+        this.errorMessage = resData.message;
+      } else {
+        this.router.navigate(['']);
+      }
+    });
+    form.reset();
+  }
+
+  switchMode() {
+    this.isLoginMode = !this.isLoginMode;
   }
   logout() {
-    this.authService.auth.signOut();
+    this.loginService.logout();
+    console.log('psh, logout?');
   }
+
   ngOnInit() {}
 }
