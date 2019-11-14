@@ -23,12 +23,14 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './user/login/login.component';
 import { LoadingSpinnerComponent } from './utils/loading-spinner/loading-spinner.component';
 import { HeaderComponent } from './header/header.component';
+import { AuthGuard } from './user/login/login.guard';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AngularFireAuthGuard] },
   {
     path: 'trimet',
-    component: TrimetComponent
+    component: TrimetComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'weather',
