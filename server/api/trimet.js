@@ -1,10 +1,10 @@
 const axios = require('axios');
 const { trimetApiKey } = require('../envconfig');
 
-const trimetAPI = async () => {
+const trimetAPI = async locations => {
   try {
     const response = await axios.get(
-      `http://developer.trimet.org/ws/v2/arrivals/?appID=${trimetApiKey}&locIDs=10293,9821`
+      `http://developer.trimet.org/ws/v2/arrivals/?appID=${trimetApiKey}&locIDs=${locations}`
     );
     const data = response.data.resultSet;
     return data;

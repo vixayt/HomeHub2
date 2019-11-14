@@ -25,7 +25,7 @@ app.get('/api/weather', async (req, res) => {
 
 app.get('/api/trimet', async (req, res) => {
   try {
-    const trimetData = await trimetAPI();
+    const trimetData = await trimetAPI(req.query.locations);
     res.status(200).send({ trimetData });
   } catch (error) {
     console.log('Trimet server error', error);

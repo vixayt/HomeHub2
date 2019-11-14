@@ -4,6 +4,7 @@
   "description": "This will act as the backend to gather data and authenticate",
   "main": "server.js",
   "scripts": {
+    "start": "npm run test-build",
     "run-client": "cd ../client && npm install && npm start",
     "test-build": "npm i && concurrently \"npm run dev\" \"npm run run-client\"",
     "dev": "nodemon server.js"

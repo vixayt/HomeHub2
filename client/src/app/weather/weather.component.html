@@ -3,11 +3,13 @@
   City:
   <input
     type="text"
+    required
     [(ngModel)]="toSearch"
     [ngModelOptions]="{ standalone: true }"
   />
   <button (click)="getWeatherForecast()">Forecast</button>
 </form>
+<p style="color:red">{{ this.weatherError }}</p>
 
 <ng-container *ngIf="summary; else isSearching">
   <h3>

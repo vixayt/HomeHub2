@@ -9,6 +9,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import {
@@ -64,6 +66,8 @@ var config = {
     BrowserAnimationsModule,
     MatTabsModule,
     MatCardModule,
+    MatSelectModule,
+    MatButtonModule,
     AngularFireModule.initializeApp(config),
     AngularFireAuthModule,
     AngularFireAuthGuardModule,

@@ -1,3 +1,32 @@
+<ng-container>
+  <h2>Add Locations</h2>
+  <div *ngIf="location; else isSearching">
+    <mat-form-field>
+      <mat-label>Which Line</mat-label>
+      <mat-select [(ngModel)]="selectedLocation">
+        <mat-option *ngFor="let line of lineOptions" [value]="line.value">
+          {{ line.longName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedLocation === 'BlueToGresham'">
+      <mat-label>Which Arrival</mat-label>
+      <mat-select [(ngModel)]="selectedLine">
+        <mat-option *ngFor="let line of BlueToGreshem" [value]="line.value">
+          {{ line.longName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-button (click)="addLocation()">
+      <i class="material-icons green">add</i>
+    </button>
+    <button mat-button color="primary" (click)="getMaxArrivalTimes()">
+      Get Arrivals
+    </button>
+    <p style="color: red;">{{ errorMessage }}</p>
+  </div>
+</ng-container>
+
 <mat-tab-group>
   <div *ngFor="let stop of location; let i = index">
     <mat-tab label="{{ stop.desc }}">
@@ -12,3 +41,9 @@
     </mat-tab>
   </div>
 </mat-tab-group>
+
+<ng-template #isSearching>
+  <div style="text-align: center;">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+</ng-template>

@@ -16,6 +16,7 @@ export class WeatherComponent implements OnInit {
   forecasts: object;
   lat: number;
   lon: number;
+  weatherError: string = '';
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -57,18 +58,24 @@ export class WeatherComponent implements OnInit {
     }
   }
   getWeatherForecast() {
-    this.city = this.toSearch;
-    this.summary = null;
-    this.http
-      .get<any>('/api/weather', {
-        params: {
-          city: this.toSearch
-        }
-      })
-      .subscribe(data => {
-        this.todaysForecast = data.weatherData.current;
-        this.summary = data.weatherData.dailyForecast.summary;
-        this.forecasts = data.weatherData.dailyForecast.data;
-      });
+    if (this.toSearch === '' || this.toSearch === undefined) {
+      this.weatherError = "Form can't be blank";
+      return;
+    } else {
+      this.weatherError = '';
+      this.city = this.toSearch;
+      this.summary = null;
+      this.http
+        .get<any>('/api/weather', {
+          params: {
+            city: this.toSearch
+          }
+        })
+        .subscribe(data => {
+          this.todaysForecast = data.weatherData.current;
+          this.summary = data.weatherData.dailyForecast.summary;
+          this.forecasts = data.weatherData.dailyForecast.data;
+        });
+    }
   }
 }
