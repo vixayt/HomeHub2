@@ -11,6 +11,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import {
@@ -70,6 +72,8 @@ var config = {
     MatCardModule,
     MatSelectModule,
     MatButtonModule,
+    MatInputModule,
+    MatIconModule,
     AngularFireModule.initializeApp(config),
     AngularFireAuthModule,
     AngularFireAuthGuardModule,
