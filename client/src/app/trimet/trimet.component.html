@@ -17,6 +17,15 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-form-field *ngIf="selectedLocation === 'BlueToHillsboro'">
+      <mat-label>Which Arrival</mat-label>
+      <mat-select [(ngModel)]="selectedLine">
+        <mat-option *ngFor="let line of BlueToHillsboro" [value]="line.value">
+          {{ line.longName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <button mat-button (click)="addLocation()">
       <i class="material-icons green">add</i>
     </button>

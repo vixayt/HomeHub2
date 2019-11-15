@@ -156,6 +156,77 @@ export class TrimetComponent implements OnInit {
     { longName: 'Gresham Central TC MAX Station (#8357)', value: '8357' },
     { longName: 'Cleveland Ave MAX Station (#8359)', value: '8359' }
   ];
+  BlueToHillsboro: object = [
+    { longName: 'Cleveland Ave MAX Station (#8359)', value: '8359' },
+    { longName: 'Gresham Central TC MAX Station (#8360)', value: '8360' },
+    { longName: 'Gresham City Hall MAX Station (#8361)', value: '8361' },
+    { longName: 'Civic Drive MAX Station (#13449)', value: '13449' },
+    {
+      longName: 'Ruby Junction/E 197th Ave MAX Station (#8362)',
+      value: '8362'
+    },
+    { longName: 'Rockwood/E 188th Ave MAX Station (#8363)', value: '8363' },
+    { longName: 'E 181st Ave MAX Station (#8364)', value: '8364' },
+    { longName: 'E 172nd Ave MAX Station (#8365)', value: '8365' },
+    { longName: 'E 162nd Ave MAX Station (#8366)', value: '8366' },
+    { longName: 'E 148th Ave MAX Station (#8367)', value: '8367' },
+    { longName: 'E 122nd Ave MAX Station (#8368)', value: '8368' },
+    { longName: 'E 102nd Ave MAX Station (#8369)', value: '8369' },
+    { longName: 'Gateway/NE 99th Ave TC MAX Station (#8370)', value: '8370' },
+    { longName: 'NE 82nd Ave MAX Station (#8371)', value: '8371' },
+    { longName: 'NE 60th Ave MAX Station (#8372)', value: '8372' },
+    { longName: 'Hollywood/NE 42nd Ave TC MAX Station (#8373)', value: '8373' },
+    { longName: 'Lloyd Center/NE 11th Ave MAX Station (#8374)', value: '8374' },
+    { longName: 'NE 7th Ave MAX Station (#8375)', value: '8375' },
+    { longName: 'Convention Center MAX Station (#8376)', value: '8376' },
+    { longName: 'Rose Quarter TC MAX Station (#8377)', value: '8377' },
+    { longName: 'Old Town/Chinatown MAX Station (#8378)', value: '8378' },
+    { longName: 'Skidmore Fountain MAX Station (#8379)', value: '8379' },
+    { longName: 'Oak/ SW 1st Ave MAX Station (#8380)', value: '8380' },
+    { longName: 'Morrison/SW 3rd Ave MAX Station (#8381)', value: '8381' },
+    { longName: 'Mall/SW 5th Ave MAX Station (#8382)', value: '8382' },
+    { longName: 'Pioneer Square North MAX Station (#8383)', value: '8383' },
+    { longName: 'Galleria/SW 10th Ave MAX Station (#8384)', value: '8384' },
+    { longName: 'Providence Park MAX Station (#9757)', value: '9757' },
+    { longName: 'Kings Hill/SW Salmon St MAX Station (#9820)', value: '9820' },
+    {
+      longName: 'Goose Hollow/SW Jefferson St MAX Station (#10117)',
+      value: '10117'
+    },
+    { longName: 'Washington Park MAX Station (#10121)', value: '10121' },
+    { longName: 'Sunset TC MAX Station (#9624)', value: '9624' },
+    { longName: 'Beaverton TC MAX Station (#9818)', value: '9818' },
+    { longName: 'Beaverton Central MAX Station (#9823)', value: '9823' },
+    { longName: 'Millikan Way MAX Station (#9825)', value: '9825' },
+    { longName: 'Beaverton Creek MAX Station (#9819)', value: '9819' },
+    { longName: 'Merlo Rd/SW 158th Ave MAX Station (#9827)', value: '9827' },
+
+    { longName: 'Elmonica/SW 170th Ave MAX Station (#9829)', value: '9829' },
+    {
+      longName: 'Willow Creek/SW 185th Ave TC MAX Station (#9832)',
+      value: '9832'
+    },
+    { longName: 'Quatama MAX Station (#9833)', value: '9833' },
+    { longName: 'Orenco MAX Station (#9836)', value: '9836' },
+    { longName: 'Hawthorn Farm MAX Station (#9840)', value: '9840' },
+    {
+      longName: 'Fair Complex/Hillsboro Airport MAX Stn (#9837)',
+      value: '9837'
+    },
+    { longName: 'Washington/SE 12th Ave MAX Station (#9842)', value: '9842' },
+    {
+      longName: 'Tuality Hospital/SE 8th Ave MAX Station (#9844)',
+      value: '9844'
+    },
+    {
+      longName: 'Hillsboro Central/SE 3rd TC MAX Station (#9845)',
+      value: '9845'
+    },
+    {
+      longName: 'Hatfield Government Center MAX Station (#9848)',
+      value: '9848'
+    }
+  ];
 }
 
 /*
