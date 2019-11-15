@@ -25,6 +25,79 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-form-field *ngIf="selectedLocation === 'GreenToClackamas'">
+      <mat-label>Which Arrival</mat-label>
+      <mat-select [(ngModel)]="selectedLine">
+        <mat-option *ngFor="let line of GreenToClackamas" [value]="line.value">
+          {{ line.longName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedLocation === 'GreenToPSU'">
+      <mat-label>Which Arrival</mat-label>
+      <mat-select [(ngModel)]="selectedLine">
+        <mat-option *ngFor="let line of GreenToPSU" [value]="line.value">
+          {{ line.longName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedLocation === 'RedToAirport'">
+      <mat-label>Which Arrival</mat-label>
+      <mat-select [(ngModel)]="selectedLine">
+        <mat-option *ngFor="let line of RedToAirport" [value]="line.value">
+          {{ line.longName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedLocation === 'RedToBeaverton'">
+      <mat-label>Which Arrival</mat-label>
+      <mat-select [(ngModel)]="selectedLine">
+        <mat-option *ngFor="let line of RedToBeaverton" [value]="line.value">
+          {{ line.longName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedLocation === 'YellowToExpoCenter'">
+      <mat-label>Which Arrival</mat-label>
+      <mat-select [(ngModel)]="selectedLine">
+        <mat-option
+          *ngFor="let line of YellowToExpoCenter"
+          [value]="line.value"
+        >
+          {{ line.longName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedLocation === 'YellowToCityCenter'">
+      <mat-label>Which Arrival</mat-label>
+      <mat-select [(ngModel)]="selectedLine">
+        <mat-option
+          *ngFor="let line of YellowToCityCenter"
+          [value]="line.value"
+        >
+          {{ line.longName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedLocation === 'OrangeToCityCenter'">
+      <mat-label>Which Arrival</mat-label>
+      <mat-select [(ngModel)]="selectedLine">
+        <mat-option
+          *ngFor="let line of OrangeToCityCenter"
+          [value]="line.value"
+        >
+          {{ line.longName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedLocation === 'OrangeToMilwaukie'">
+      <mat-label>Which Arrival</mat-label>
+      <mat-select [(ngModel)]="selectedLine">
+        <mat-option *ngFor="let line of OrangeToMilwaukie" [value]="line.value">
+          {{ line.longName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
     <button mat-button (click)="addLocation()">
       <i class="material-icons green">add</i>
