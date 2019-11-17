@@ -1,0 +1,10 @@
+<ng-container>
+    <h1>College Football Database!</h1>
+    <h3>A detailed set of game and player statistics from 2005-2012.</h3>
+    <h4>Please Select a Team: {{ teams | json }} </h4>
+    <ul>
+        <li *ngFor="let team of teams">
+            <span>{{team.name}}</span>
+        </li>
+    </ul> 
+</ng-container>
