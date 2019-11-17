@@ -1,25 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { database } from 'firebase';
+import { AngularFireAuth } from '@angular/fire/auth';
+
 
 
 @Component({
   selector: 'app-football',
   templateUrl: './football.component.html',
-  styleUrls: ['./football.component.scss']
+  styleUrls: ['./football.component.scss'],
 })
 export class FootballComponent implements OnInit {
-  teams = [];
-  constructor(private _http: HttpClient) { }
-
-  ngOnInit() {
-    this._http
-      .get<any>('/api/teams', {
-
+  teams : any = [];
+  team: string;
+  constructor(private http: HttpClient) { }
+    ngOnInit() {
+      this.http
+        .get<String[]>('/api/teams', {
       })
       .subscribe(data =>{
-        console.log(data.rows);
-        this.teams = data.rows;
+        this.teams.push(data);
+        console.log(this.teams);
       });
-  }
+
+      
+
+   }
+
+ 
+
 
 }
+
+
+
+

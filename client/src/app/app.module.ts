@@ -24,6 +24,7 @@ import { LoginComponent } from './user/login/login.component';
 import { LoadingSpinnerComponent } from './utils/loading-spinner/loading-spinner.component';
 import { HeaderComponent } from './header/header.component';
 import { AuthGuard } from './user/login/login.guard';
+import { FootballComponent } from './football/football.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AngularFireAuthGuard] },
@@ -36,7 +37,8 @@ const appRoutes: Routes = [
     path: 'weather',
     component: WeatherComponent
   },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'football', component: FootballComponent}
 ];
 
 var config = {
@@ -57,7 +59,8 @@ var config = {
     HomeComponent,
     LoginComponent,
     LoadingSpinnerComponent,
-    HeaderComponent
+    HeaderComponent,
+    FootballComponent,
   ],
   imports: [
     BrowserModule,

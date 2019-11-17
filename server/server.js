@@ -9,7 +9,7 @@ const weatherAPI = require('./api/weather');
 const trimetAPI = require('./api/trimet');
 
 const path = require('path');
-
+const db = require('./api/db');
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -32,5 +32,18 @@ app.get('/api/trimet', async (req, res) => {
     res.status(500).send({ Error: 'Trimet server Error' });
   }
 });
+
+app.get('/api/teams', async (req, res) => {
+  db.query('SELECT name FROM team;', [], (err, rs) => {
+    if(err) {
+      console.log("error");
+    }
+    console.log("Received")
+    res.status(200).send(rs.rows);
+  }
+  )
+});
+
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
