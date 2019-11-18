@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 
 const weatherAPI = require('./api/weather');
 const trimetAPI = require('./api/trimet');
+const {teamQuery, gameQuery} = require('./api/football');
 
 const path = require('path');
 const db = require('./api/db');
@@ -19,7 +20,7 @@ app.get('/api/weather', async (req, res) => {
     res.status(200).send({ weatherData });
   } catch (error) {
     console.log('Weather Server Error');
-    res.status(500).send({ Error: 'Weater Server Error' });
+    res.status(500).send({ Error: 'Weather Server Error' });
   }
 });
 
@@ -38,10 +39,20 @@ app.get('/api/teams', async (req, res) => {
     if(err) {
       console.log("error");
     }
-    console.log("Received")
     res.status(200).send(rs.rows);
   }
   )
+});
+
+app.get('/api/games', async(req, res) => {
+  console.log("HERE");
+  gameQuery([], (err, rs) => {
+    if(err) {
+      console.log("error");
+    }
+    console.log(res.rows);
+    res.status(200).send(rs.rows);
+  });
 });
 
 

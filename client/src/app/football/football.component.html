@@ -1,10 +1,30 @@
 <ng-container>
     <h1>College Football Database!</h1>
     <h3>A detailed set of game and player statistics from 2005-2012.</h3>
-    <h4>Please Select a Team: {{ teams | json }} </h4>
-    <ul>
-        <li *ngFor="let team of teams">
-            <span>{{team.name}}</span>
-        </li>
-    </ul> 
+    <h4>Please Select a Team: {{ team }} </h4>
+    <select (change)="selectedTeam($event.target.value)" ng-model="team">
+        <option *ngFor="let team of teams">
+            <span>{{team}}</span>
+        </option>
+    </select> 
+    <select (change)="selectedYear($event.target.value)" ng-model="year">
+        <option *ngFor="let year of years">
+            <span>{{ year }}</span>
+        </option>
+    </select>
+    <button (click)="getTeamsGames()">Click ME</button>
+
+
+    <div *ngIf="received_data; else noData">
+        <table>
+            <tr *ngFor="let game of gameData">
+                <td>{{game.Home_Team | json}}</td>
+            </tr>
+        </table>  
+    </div>
+    <ng-template #noData>
+        <p>
+            Please select a team and year to get information for.
+        </p>
+    </ng-template>
 </ng-container>
