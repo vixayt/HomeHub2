@@ -12,15 +12,24 @@
             <span>{{ year }}</span>
         </option>
     </select>
-    <button (click)="getTeamsGames()">Click ME</button>
-
+    <button (click)="getTeamsGames()">Get Game Data</button>
 
     <div *ngIf="received_data; else noData">
         <table>
-            <tr *ngFor="let game of gameData">
-                <td>{{game.Home_Team | json}}</td>
+        <thead>
+            <tr> {{team}} Games for the {{year}} season.</tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of gameData">
+                <td>
+                    {{row.home_team}} -- {{row.home_score}}
+                </td>
+                <td>
+                    {{row.away_team}} -- {{row.away_score}}
+                </td>
             </tr>
-        </table>  
+        </tbody>
+        </table>
     </div>
     <ng-template #noData>
         <p>

@@ -29,19 +29,19 @@ export class FootballComponent implements OnInit {
         {
           this.teams.push(data[d].name);
         }
-        console.log(this.teams);
       });
     }
+
     selectedTeam(team: string)
     {
-      console.log(team);
       this.team = team;
     }
+
     selectedYear(year: string)
     {
-      console.log(year)
       this.year = year;
     }
+
     getTeamsGames() {
       if(this.team == '' || this.year == undefined){
         this.footballError = "Select a team an a year";
@@ -55,11 +55,47 @@ export class FootballComponent implements OnInit {
             params: params
           })
           .subscribe(data =>{
-            this.gameData.push(data);
+            this.gameData = [];
+            for(var d in data)
+            { 
+              this.gameData.push(JSON.parse(JSON.stringify(data[d])));
+              this.gameData[d].gameLeaders=null;
+            }
             this.received_data= true;
-            console.log(this.gameData[0]);
+            this.getLeaders();
           });
+          
       }
+      
+    }
+
+    getLeaders() {
+    
+      for(var g in this.gameData)
+      {
+  
+        let params: any;
+        //get leaders for home team
+        params = new HttpParams();
+      
+        params = params.append("team", this.gameData[g].home_team);
+        params = params.append("game", this.gameData[g].game_id);
+        this.http
+          .get<any>('api/leaders', {
+            params: params
+          })
+          .subscribe(data => {
+            for(var d in data)
+            {
+              this.gameData.gameLeaders.home_team.push(data[d]);
+            }
+          });
+        console.log(this.gameData[g].home_team)
+
+        //get leaders for away team
+        params = new HttpParams();
+      }
+
     }
 
 
