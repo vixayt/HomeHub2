@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 
 const weatherAPI = require('./api/weather');
 const trimetAPI = require('./api/trimet');
-const {teamQuery, gameQuery, rushQuery, passQuery, recQuery} = require('./api/football');
+const {teamQuery, gameQuery, rushQuery, passQuery, recQuery, defQuery} = require('./api/football');
 
 const path = require('path');
 app.use(cors());
@@ -56,13 +56,19 @@ app.get('/api/leaders', async(req, res) => {
   var team = req.query.team;
   var game = req.query.game;
   var leaders = {}
+
   var rush_leaders = await rushQuery([team, game]);
+  console.log(rush_leaders.rows);
   var pass_leaders = await passQuery([team, game]);
   var rec_leaders = await recQuery([team, game]);
+  var def_leaders = await defQuery([team, game]);
+ 
 
   leaders.passing = pass_leaders.rows;
   leaders.rushing = rush_leaders.rows;
   leaders.receiving = rec_leaders.rows;
+  leaders.defense = def_leaders.rows;
+  console.log(leaders);
   //leaders.kickoff =
   //leaders.punt =
   //leaders.defense =

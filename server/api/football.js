@@ -65,7 +65,23 @@ var rec_leaders_query = `SELECT DISTINCT
                         WHERE t.name = $1 AND g.game_id = $2 
                         AND ps.rec > 0 ORDER BY ps.rec_yards DESC;`;
 
-var defense_query;
+                    
+
+var defense_query = `SELECT DISTINCT
+                        p.last_name, p.first_name,
+                        p.number, ps.tackle_solo,
+                        ps.tackle_assist, ps.tackle_forloss,
+                        ps.sack, ps.sack_yard, ps.qb_hurry,
+                        ps.fumble_forced, ps.pass_borken,
+                        ps.kick_punt_block
+                    FROM player p
+                    JOIN playerStats ps ON p.player_id = ps.player
+                    JOIN game g ON g.game_id = ps.game 
+                    JOIN playerteamrel ptr ON ptr.player = p.player_id
+                    JOIN team t ON ptr.team = t.team_id
+                    WHERE t.name = $1 AND g.game_id = $2 
+                    ORDER BY ps.tackle_solo DESC LIMIT 10;`;
+
 
 
 
@@ -90,10 +106,7 @@ module.exports = {
         return client.query(rec_leaders_query, params);
     },
 
-    //kickoff
-
-    //punt
-
-    //defense
-
+    defQuery: (params) => {
+        return client.query(defense_query, params);
+    }
 }
