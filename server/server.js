@@ -7,9 +7,9 @@ const dotenv = require('dotenv');
 
 const weatherAPI = require('./api/weather');
 const trimetAPI = require('./api/trimet');
+const {teamQuery, gameQuery, rushQuery, passQuery, recQuery, defQuery} = require('./api/football');
 
 const path = require('path');
-const db = require('./api/db');
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -19,7 +19,7 @@ app.get('/api/weather', async (req, res) => {
     res.status(200).send({ weatherData });
   } catch (error) {
     console.log('Weather Server Error');
-    res.status(500).send({ Error: 'Weater Server Error' });
+    res.status(500).send({ Error: 'Weather Server Error' });
   }
 });
 
@@ -34,15 +34,48 @@ app.get('/api/trimet', async (req, res) => {
 });
 
 app.get('/api/teams', async (req, res) => {
-  db.query('SELECT name FROM team;', [], (err, rs) => {
+  teamQuery((err, rs) => {
     if(err) {
       console.log("error");
     }
-    console.log("Received")
     res.status(200).send(rs.rows);
   }
   )
 });
+
+app.get('/api/games', async(req, res) => {
+  var team = req.query.team;
+  var year = req.query.year;
+  var date1 = '8/1/' + year;
+  var date2 = '1/31/' + (+year + 1);
+  let games = await gameQuery([team, date1, date2]);
+  res.status(200).send(games.rows);
+});
+
+app.get('/api/leaders', async(req, res) => {
+  var team = req.query.team;
+  var game = req.query.game;
+  var leaders = {}
+
+  var rush_leaders = await rushQuery([team, game]);
+  console.log(rush_leaders.rows);
+  var pass_leaders = await passQuery([team, game]);
+  var rec_leaders = await recQuery([team, game]);
+  var def_leaders = await defQuery([team, game]);
+ 
+
+  leaders.passing = pass_leaders.rows;
+  leaders.rushing = rush_leaders.rows;
+  leaders.receiving = rec_leaders.rows;
+  leaders.defense = def_leaders.rows;
+  console.log(leaders);
+  //leaders.kickoff =
+  //leaders.punt =
+  //leaders.defense =
+  res.status(200).send(leaders);
+});
+
+
 
 
 
