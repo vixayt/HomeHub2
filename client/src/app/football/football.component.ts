@@ -44,7 +44,8 @@ export class FootballComponent implements OnInit {
 
     getTeamsGames() {
       if(this.team == '' || this.year == undefined){
-        this.footballError = "Select a team an a year";
+        this.year = this.years[0];
+        this.team = this.teams[0];
         return;
       } else {
         let params = new HttpParams();
@@ -64,10 +65,8 @@ export class FootballComponent implements OnInit {
             }
             this.received_data= true;
             this.getLeaders();
-          });
-          
+          });   
       }
-      
     }
 
     async getLeaders() {
@@ -90,22 +89,15 @@ export class FootballComponent implements OnInit {
         console.log(home_response);
         this.gameData[g].gameLeaders.home_team = JSON.parse(JSON.stringify(home_response));
         
-/*         params = new HttpParams();
+        params = new HttpParams();
         params = params.append("team", this.gameData[g].away_team);
         params = params.append("game", this.gameData[g].game_id);
         var away_response = await this.http.get<any>('api/leaders', {params: params}).toPromise();
         console.log(away_response);
-        this.gameData[g].gameLeaders.away_team = JSON.parse(JSON.stringify(away_response)); */
+        this.gameData[g].gameLeaders.away_team = JSON.parse(JSON.stringify(away_response));
         
-
-        //get leaders for away team
-        params = new HttpParams();
       }
-
     }
-
-
-
 }
 
 
