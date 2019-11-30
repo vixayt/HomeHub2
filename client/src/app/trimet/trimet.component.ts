@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { UserModel } from "../user/user.model";
+import { LoginService } from "../user/login/login.service";
 import {
   BlueToGreshem,
   BlueToHillsboro,
@@ -55,7 +57,19 @@ export class TrimetComponent implements OnInit {
   selectedLine: string;
   selectedLocations: string[] = [];
   location: object;
-  constructor(private _http: HttpClient) {}
+  BlueToGreshem = BlueToGreshem;
+  BlueToHillsboro = BlueToHillsboro;
+  GreenToClackamas = GreenToClackamas;
+  GreenToPSU = GreenToPSU;
+  OrangeToCityCenter = OrangeToCityCenter;
+  OrangeToMilwaukie = OrangeToMilwaukie;
+  RedToAirport = RedToAirport;
+  RedToBeaverton = RedToBeaverton;
+  YellowToCityCenter = YellowToCityCenter;
+  YellowToExpoCenter = YellowToExpoCenter;
+  currentUser: UserModel;
+
+  constructor(private _http: HttpClient, private loginService: LoginService) {}
 
   ngOnInit() {
     this._http
@@ -68,6 +82,7 @@ export class TrimetComponent implements OnInit {
         this.arrival = data.trimetData.arrival;
         this.location = data.trimetData.location;
       });
+    console.log(this.loginService.user.getValue());
   }
 
   getMaxArrivalTimes() {

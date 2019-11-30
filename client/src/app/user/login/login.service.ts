@@ -57,7 +57,7 @@ export interface UserCredential {
 
 @Injectable({ providedIn: "root" })
 export class LoginService {
-  user = new BehaviorSubject<UserModel>(null);
+  public user = new BehaviorSubject<UserModel>(null);
   helper = new JwtHelperService();
   private tokenExpirationTimer: any;
 
@@ -71,6 +71,7 @@ export class LoginService {
     const email: string = form.value.email;
     const firstName: string = form.value.firstName;
     const lastName: string = form.value.lastName;
+    const zipCode: string = form.value.zipCode;
     return from(
       this.authService.auth
         .createUserWithEmailAndPassword(form.value.email, form.value.password)
@@ -80,6 +81,7 @@ export class LoginService {
             email,
             firstName,
             lastName,
+            zipCode,
             id
           });
           const helper = JSON.parse(
@@ -95,7 +97,8 @@ export class LoginService {
             uid,
             expirationDate,
             firstName,
-            lastName
+            lastName,
+            zipCode
           );
           return result;
         })
@@ -137,6 +140,7 @@ export class LoginService {
       _tokenExpirationDate: number;
       firstName?: string;
       lastName?: string;
+      zipCode?: string;
     } = JSON.parse(localStorage.getItem("userData"));
 
     if (!userData) {
@@ -147,7 +151,8 @@ export class LoginService {
       userData._uid,
       new Date(userData._tokenExpirationDate),
       userData.firstName,
-      userData.lastName
+      userData.lastName,
+      userData.zipCode
     );
     if (loadedUser.email) {
       this.user.next(loadedUser);
@@ -179,11 +184,22 @@ export class LoginService {
     uid: string,
     expirationDate: Date,
     firstName?: string,
-    lastName?: string
+    lastName?: string,
+    zipCode?: string
   ) {
-    const user = new UserModel(email, uid, expirationDate, firstName, lastName);
+    const user = new UserModel(
+      email,
+      uid,
+      expirationDate,
+      firstName,
+      lastName,
+      zipCode
+    );
     this.user.next(user);
     // this.autoLogout(new Date(expirationDate).getTime());
     localStorage.setItem("userData", JSON.stringify(user));
+  }
+  public getZipCode() {
+    return this.user.value.zipCode;
   }
 }

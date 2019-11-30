@@ -1,64 +1,112 @@
-<div>
-  <div *ngIf="!isLoading">
-    <p>{{ isLoginMode ? 'Log In' : 'Register' }}</p>
-    <form
-      #authForm="ngForm"
-      (ngSubmit)="loginButton(authForm)"
-      *ngIf="!isLoading"
-    >
-      <input
-        type="text"
-        id="email"
-        class="form-control"
-        name="email"
-        ngModel
-        email
-        required
-        placeholder="Email"
-      />
-      <input
-        type="text"
-        id="firstName"
-        class="form-control"
-        name="firstName"
-        ngModel
-        required
-        placeholder="First Name"
-        *ngIf="!isLoginMode"
-      />
-      <input
-        type="text"
-        id="lastName"
-        class="form-control"
-        name="lastName"
-        ngModel
-        required
-        placeholder="Last Name"
-        *ngIf="!isLoginMode"
-      />
-      <input
-        type="password"
-        id="password"
-        class="form-control"
-        ngModel
-        name="password"
-        placeholder="Password"
-        required
-        minlength="6"
-      />
-      <div>
-        <button
-          class="btn btn-primary"
-          type="submit"
-          [disabled]="!authForm.valid"
+<div layout="column" flex>
+  <div
+    *ngIf="!isLoading"
+    flex
+    layout="column"
+    layout-align="center center"
+    class="login-form"
+  >
+    <mat-card>
+      <mat-card-header>
+        <div>
+          <h2>{{ isLoginMode ? "Log In" : "Register" }}</h2>
+        </div>
+      </mat-card-header>
+      <form
+        #authForm="ngForm"
+        (ngSubmit)="loginButton(authForm)"
+        *ngIf="!isLoading"
+        class="login-form"
+      >
+        <mat-card-content
+          layout="row"
+          layout-align="center center"
+          style="min-height: 120px"
         >
-          {{ isLoginMode ? 'Log In' : 'Register' }}
-        </button>
-        <button class="btn btn-primary" type="button" (click)="switchMode()">
-          {{ isLoginMode ? 'Switch to Register' : 'Switch to Log In' }}
-        </button>
-      </div>
-    </form>
+          <mat-form-field *ngIf="!isLoginMode">
+            <input
+              matInput
+              type="text"
+              id="firstName"
+              class="form-control"
+              name="firstName"
+              ngModel
+              required
+              placeholder="First Name"
+            />
+          </mat-form-field>
+          <mat-form-field *ngIf="!isLoginMode">
+            <input
+              matInput
+              type="text"
+              id="lastName"
+              class="form-control"
+              name="lastName"
+              ngModel
+              required
+              placeholder="Last Name"
+            />
+          </mat-form-field>
+          <mat-form-field *ngIf="!isLoginMode">
+            <input
+              matInput
+              type="text"
+              id="zipCode"
+              class="form-control"
+              name="zipCode"
+              ngModel
+              required
+              placeholder="Zip Code"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              type="text"
+              id="email"
+              class="form-control"
+              name="email"
+              ngModel
+              email
+              required
+              placeholder="Email"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              type="password"
+              id="password"
+              class="form-control"
+              ngModel
+              name="password"
+              placeholder="Password"
+              required
+              minlength="6"
+            />
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            class="btn btn-primary"
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!authForm.valid"
+          >
+            {{ isLoginMode ? "Log In" : "Register" }}
+          </button>
+          <button
+            class="btn btn-primary"
+            mat-raised-button
+            type="button"
+            (click)="switchMode()"
+          >
+            {{ isLoginMode ? "Switch to Register" : "Switch to Log In" }}
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card>
   </div>
 </div>
 <div *ngIf="errorMessage" class="error-message" style="color: red">

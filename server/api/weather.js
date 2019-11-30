@@ -1,13 +1,13 @@
-const axios = require('axios');
+const axios = require("axios");
 const {
   openWeatherMapApiKey,
   darkSkyWeatherForecastApiKey
-} = require('../envconfig');
+} = require("../envconfig");
 
-const weatherAPI = async city => {
+const weatherAPI = async args => {
   try {
     const openWeatherResponse = await axios.get(
-      `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&APPID=${openWeatherMapApiKey}`
+      `http://api.openweathermap.org/data/2.5/weather?${args}&units=imperial&APPID=${openWeatherMapApiKey}`
     );
     try {
       const darkWeatherResponse = await axios.get(
@@ -19,10 +19,10 @@ const weatherAPI = async city => {
         dailyForecast: darkWeatherResponse.data.daily
       };
     } catch (error) {
-      console.log('Dark Sky error', error);
+      console.log("Dark Sky error", error);
     }
   } catch (error) {
-    console.log('Open Weather error', error);
+    console.log("Open Weather error", error);
   }
 };
 
