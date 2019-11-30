@@ -5,16 +5,19 @@ const bodyParser = require("body-parser");
 const port = process.env.PORT || 3000;
 const dotenv = require("dotenv");
 
-const weatherAPI = require("./api/weather");
-const trimetAPI = require("./api/trimet");
-const {
-  teamQuery,
-  gameQuery,
-  rushQuery,
-  passQuery,
-  recQuery,
-  defQuery
-} = require("./api/football");
+
+const weatherAPI = require('./api/weather');
+const trimetAPI = require('./api/trimet');
+const {teamQuery, 
+       gameQuery, 
+       rushQuery, 
+       passQuery, 
+       recQuery, 
+       defQuery, 
+       kickQuery, 
+       puntReturnQuery, 
+       kickReturnQuery} = require('./api/football');
+
 
 const path = require("path");
 app.use(cors());
@@ -64,19 +67,23 @@ app.get("/api/leaders", async (req, res) => {
   var leaders = {};
 
   var rush_leaders = await rushQuery([team, game]);
-  console.log(rush_leaders.rows);
   var pass_leaders = await passQuery([team, game]);
   var rec_leaders = await recQuery([team, game]);
   var def_leaders = await defQuery([team, game]);
+  var punt_return_leaders = await puntReturnQuery([team, game]);
+  var kicking_leaders = await kickQuery([team, game]);
+  var kick_return_leaders = await kickReturnQuery([team, game]);
+ 
 
   leaders.passing = pass_leaders.rows;
   leaders.rushing = rush_leaders.rows;
   leaders.receiving = rec_leaders.rows;
   leaders.defense = def_leaders.rows;
-  console.log(leaders);
-  //leaders.kickoff =
-  //leaders.punt =
-  //leaders.defense =
+  leaders.punt = punt_return_leaders.rows;
+  leaders.kicking = kicking_leaders.rows;
+  leaders.kick_return = kick_return_leaders.rows;
+
+  
   res.status(200).send(leaders);
 });
 

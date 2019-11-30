@@ -1,29 +1,75 @@
 .game_row {
     background-color: rgb(207, 211, 211);
-    width: 10000fr;
+    min-width: 1200px;
+    min-height: 1000px;
 }
 
-.data_cell {
-    align-content: center;
-    vertical-align: middle;
-}
 
 .class_table {
     vertical-align: top;
 }
 
-.home_team_data {
-    vertical-align: top;
+.main_box {
+    display: grid;
+    row-gap: 10px;
+    grid-template-columns: auto auto;
+    min-height: 300px;
 }
+
+.home_team {
+    text-align: left; 
+    font-size: larger;
+}
+
+.away_team {
+    text-align: left;
+    font-size:larger;
+}
+
+
+.main-game-box {
+    border: 1px solid black;
+    background: rgb(201, 196, 196);
+    width: 750px;
+    height: 50px;
+    grid-column-end: 2;
+    grid-column-start: 1;
+    padding: 6px;
+    display: flex;
+    justify-content:space-between;
+}
+
+
+.game-data-box {
+
+    grid-column-end: 2;
+    grid-column-start: 1;
+}
+
+.date {
+    width: 750px;
+    text-align: center;
+}
+
 
 .data_rows {
 
     background-color: rgb(207, 211, 211);
     vertical-align: top;
+    
+    
+}
+.main_table {
+    table-layout: fixed;
+    vertical-align: top;
+    
+}
+
+.data_rows > td {
+    width: 100%;
 }
 .inner-table {
     border: 1px;
     border: 1px solid black;
-    border-block-color: black;
     vertical-align: top;
 }

@@ -1,36 +1,42 @@
-<ng-container>
-    <h1>College Football Database!</h1>
-    <h3>A detailed set of game and player statistics from 2005-2012.</h3>
-    <h4>Please Select a Team: {{ team }} </h4>
-    <select (change)="selectedTeam($event.target.value)" ng-model="team">
-        <option *ngFor="let team of teams">
-            <span>{{team}}</span>
-        </option>
-    </select> 
-    <select (change)="selectedYear($event.target.value)" ng-model="year">
-        <option *ngFor="let year of years">
-            <span>{{ year }}</span>
-        </option>
-    </select>
-    <button (click)="getTeamsGames()">Get Game Data</button>
 
-    <div *ngIf="received_data; else noData">
-        <table>
-            <thead>
-                {{team}} Games for the {{year}} season.
-            </thead>
-            <ng-container *ngFor="let row of gameData;let i=index">
-                <tr class="game_row" (click)="row.expanded = !row.expanded">
-                    <td style="align-content: flex-start;"> 
-                        <b>{{row.home_score}} -- {{row.home_team}}</b>
-                    </td>                   
-                    <td style="align-content: flex-end;"> 
-                        <b>{{row.away_team}} -- {{row.away_score}}</b>
-                    </td>
-                </tr>
-                <ng-container *ngIf="row.expanded">
-                    <tr class="home_team_data">
-                        <td>
+<h1>College Football Database!</h1>
+<h3>A detailed set of game and player statistics from 2005-2012.</h3>
+<h4>Please Select a Team: {{ team }} </h4>
+<select (change)="selectedTeam($event.target.value)" ng-model="team">
+    <option *ngFor="let team of teams">
+        <span>{{team}}</span>
+    </option>
+</select> 
+<select (change)="selectedYear($event.target.value)" ng-model="year">
+    <option *ngFor="let year of years">
+        <span>{{ year }}</span>
+    </option>
+</select>
+<button (click)="getTeamsGames()">Get Game Data</button>
+<div class="main_box" *ngIf="received_data; else noData">
+    <ng-container *ngFor="let row of gameData; let i=index">
+        <div class="main-game-box" (click)="row.expanded = !row.expanded">
+            <div class="home_team">
+                <strong>{{row.home_team}}</strong> {{row.home_score}} 
+            </div>
+            <div class="away_team">
+               {{row.away_score}} <strong>{{row.away_team}}</strong>
+            </div>
+        </div>
+        <div class="game-data-box" *ngIf ="row.expanded">
+            <div class="date" (click)="row.home_team_data = !row.home_team_data">
+                <span>
+                        {{row.stadium}} -- {{row.city}}, {{row.state}}
+                </span>
+                <br>
+                <span>
+                        {{row.date | date}}
+                </span>
+            </div>
+            <div class="home_team_data" *ngIf="row.home_team_data; else away_data">
+                <table class="main_table">
+                    <tr valign="top" class="offense">
+                        <td class="passing">
                             <table class="inner-table">
                                 <thead>{{row.home_team}} Passing</thead>
                                 <tr>
@@ -41,15 +47,21 @@
                                 </tr>
                                 <ng-container *ngFor="let player of gameData[i].gameLeaders.home_team.passing">
                                     <tr class="data_rows">
-                                        <td>{{player.first_name}} {{player.last_name}}</td>
+                                        <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
                                         <td>{{player.pass_comp}}/{{player.pass_att}}</td>
                                         <td>{{player.pass_yard}}</td>
                                         <td>{{player.pass_td}}</td>
                                     </tr>
                                 </ng-container>
+                                    <tr class="data_rows">
+                                        <td><b>Team</b></td>
+                                        <td><b>{{row.home_pass_comp}}/{{row.home_pass_att}}</b></td>
+                                        <td><b>{{row.home_pass_yards}}</b></td>
+                                        <td><b>{{row.home_pass_td}}</b></td>
+                                    </tr>
                             </table>
                         </td>
-                        <td>
+                        <td class="receiving">
                             <table class="inner-table">
                                 <thead>{{row.home_team}} Receiving</thead>
                                 <tr>
@@ -59,17 +71,24 @@
                                     <td>tds</td> 
                                 </tr>
                                 <ng-container *ngFor="let player of gameData[i].gameLeaders.home_team.receiving">
-                                    <tr class="data_rows">
-                                        <td>{{player.first_name}} {{player.last_name}}</td>
-                                        <td class="data_cell">{{player.rec}}</td>
-                                        <td class="data_cell">{{player.rec_yards}}</td>
-                                        <td class="data_cell">{{player.rec_td}}</td>
-                                    </tr>
+                                <tr class="data_rows">
+                                    <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                    <td class="data_cell">{{player.rec}}</td>
+                                    <td class="data_cell">{{player.rec_yards}}</td>
+                                    <td class="data_cell">{{player.rec_td}}</td>
+                                </tr>
                                 </ng-container>
+                                <tr class="data_rows">
+                                    <td><b>Team</b></td>
+                                    <td><b>{{row.home_pass_comp}}</b></td>
+                                    <td><b>{{row.home_pass_yards}}</b></td>
+                                    <td><b>{{row.home_pass_td}}</b></td>
+                                </tr>
                             </table>
+
                         </td>
-                        <td>
-                            <table class="inner-table">
+                        <td class="rushing">
+                            <table class= "inner-table">
                                 <thead>{{row.home_team}} Rushing</thead>
                                 <tr>
                                     <td>name</td>
@@ -78,31 +97,298 @@
                                     <td>tds</td> 
                                 </tr>
                                 <ng-container *ngFor="let player of gameData[i].gameLeaders.home_team.rushing">
-                                    <tr class="data_rows">
-                                        <td>{{player.first_name}} {{player.last_name}}</td>
-                                        <td class="data_cell">{{player.rush_att}}</td>
-                                        <td class="data_cell">{{player.rush_yard}}</td>
-                                        <td class="data_cell">{{player.rush_td}}</td>
-                                    </tr>
+                                <tr class="data_rows">
+                                    <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                    <td class="data_cell">{{player.rush_att}}</td>
+                                    <td class="data_cell">{{player.rush_yard}}</td>
+                                    <td class="data_cell">{{player.rush_td}}</td>
+                                </tr>
+                                </ng-container>
+                                <tr class="data_rows">
+                                    <td><b>Team</b></td>   
+                                    <td><b>{{row.home_rush_att}}</b></td>
+                                    <td><b>{{row.home_rush}}</b></td>
+                                    <td><b>{{row.home_rush_td}}</b></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="kicking">
+                            <table class="inner-table">
+                                <thead>
+                                    {{row.home_team}} Field Goal Kicking
+                                </thead>
+                                <tr>
+                                    <td>name</td>
+                                    <td>att</td>
+                                    <td>made</td>
+                                </tr>
+                                <ng-container *ngFor="let player of gameData[i].gameLeaders.home_team.kicking"> 
+                                <tr class="data_rows">
+                                    <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                    <td class="data_cell">{{player.field_goal_att}}</td>
+                                    <td class="data_cell">{{player.field_goal_made}}</td>
+                                </tr>
                                 </ng-container>
                             </table>
                         </td>
-                        <td>Defensive Data Here</td>
-                    </tr>
-                    <tr>
-                        <td>{{row.away_team}} Passing</td>
-                        <td>{{row.away_team}} Receiving</td>
-                        <td>{{row.away_team}} Rushing</td>
-                        <td>{{row.away_team}} Defense</td>
-                    </tr>
-                </ng-container>
+                        <td class="Kick_Returns">
+                            <table class="inner-table">
+                                <thead>
+                                    {{row.home_team}} Kick Returns
+                                </thead>
+                                <tr>
+                                    <td>name</td>
+                                    <td>ret</td>
+                                    <td>yrds</td>
+                                    <td>td</td>
+                                </tr>
+                                <ng-container *ngFor="let player of gameData[i].gameLeaders.home_team.kick_return">
+                                <tr class="data_rows">
+                                    <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                    <td>{{player.kickoff_ret}}</td>
+                                    <td>{{player.kickoff_ret_yards}}</td>
+                                    <td>{{player.kickoff_ret_td}}</td>
+                                </tr>
+                                </ng-container>
+                            </table>
+                        </td>
+                        <td class="punt_returns">
+                            <table class="inner-table">
+                                <thead>
+                                    {{row.home_team}} Punt Returns
+                                </thead>
+                                <tr>
+                                    <td>name</td>
+                                    <td>ret</td>
+                                    <td>yards</td>
+                                    <td>td</td>
+                                </tr>
+                                <ng-container *ngFor="let player of gameData[i].gameLeaders.home_team.punt">
+                                <tr class="data_rows">
+                                    <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                    <td>{{player.punt_ret}}</td>
+                                    <td>{{player.punt_ret_yards}}</td>
+                                    <td>{{player.punt_ret_td}}</td>
+                                </tr>    
+                                </ng-container>
+                            </table>
 
-            </ng-container>
-        </table>
-    </div>
-    <ng-template #noData>
+                        </td>
+                    </tr>
+                    <tr class="defense">
+                        <td colspan="3">
+                            <table class="inner-table">
+                                <thead>{{row.home_team}} Defense</thead>
+                                <tr>
+                                    <td>name</td>
+                                    <td>tcle</td>
+                                    <td>tcle ass</td>
+                                    <td>tfl</td>
+                                    <td>sck</td>
+                                    <td>scky</td>
+                                    <td>qbh</td>
+                                    <td>pbkn</td>
+                                </tr>
+                                <ng-container *ngFor="let player of gameData[i].gameLeaders.home_team.defense">
+                                <tr class="data_rows">
+                                    <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                    <td>{{player.tackle_solo}}</td>
+                                    <td>{{player.tackle_assist}}</td>
+                                    <td>{{player.tackle_forloss}}</td>
+                                    <td>{{player.sack}}</td>
+                                    <td>{{player.sack_yard}}</td>
+                                    <td>{{player.qb_hurry}}</td>
+                                    <td>{{player.pass_borken}}</td>
+                                </tr>
+                                </ng-container>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <ng-template #away_data>
+                <div class="away_team_data">
+                    <table class="main_table">
+                        <tr valign="top" class="offense">
+                            <td class="passing">
+                                <table class="inner-table">
+                                    <thead>{{row.away_team}} Passing</thead>
+                                    <tr>
+                                    <td><strong>name</strong></td>
+                                        <td>cmp/att</td>
+                                        <td>yrds</td>
+                                        <td>tds</td>
+                                    </tr>
+                                    <ng-container *ngFor="let player of gameData[i].gameLeaders.away_team.passing">
+                                    <tr class="data_rows">
+                                        <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                        <td>{{player.pass_comp}}/{{player.pass_att}}</td>
+                                        <td>{{player.pass_yard}}</td>
+                                        <td>{{player.pass_td}}</td>
+                                    </tr>
+                                    </ng-container>
+                                    <tr class="data_rows">
+                                        <td><b>Team</b></td>
+                                        <td><b>{{row.away_pass_comp}}/{{row.away_pass_att}}</b></td>
+                                        <td><b>{{row.away_pass_yards}}</b></td>
+                                        <td><b>{{row.away_pass_td}}</b></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td class="receiving">
+                                <table class="inner-table">
+                                    <thead>{{row.away_team}} Receiving</thead>
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>rec</td>
+                                        <td>yrds</td>
+                                        <td>tds</td> 
+                                    </tr>
+                                    <ng-container *ngFor="let player of gameData[i].gameLeaders.away_team.receiving">
+                                    <tr class="data_rows">
+                                        <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                        <td class="data_cell">{{player.rec}}</td>
+                                        <td class="data_cell">{{player.rec_yards}}</td>
+                                        <td class="data_cell">{{player.rec_td}}</td>
+                                    </tr>
+                                    </ng-container>
+                                    <tr class="data_rows">
+                                        <td><b>Team</b></td>
+                                        <td><b>{{row.away_pass_comp}}</b></td>
+                                        <td><b>{{row.away_pass_yards}}</b></td>
+                                        <td><b>{{row.away_pass_td}}</b></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td class="rushing">
+                                <table class="inner-table">
+                                    <thead>{{row.away_team}} Rushing</thead>
+                                    <tr>
+                                        <td>name</td>
+                                        <td>att</td>
+                                        <td>yrds</td>
+                                        <td>tds</td> 
+                                    </tr>
+                                    <ng-container *ngFor="let player of gameData[i].gameLeaders.away_team.rushing">
+                                        <tr class="data_rows">
+                                            <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                            <td class="data_cell">{{player.rush_att}}</td>
+                                            <td class="data_cell">{{player.rush_yard}}</td>
+                                            <td class="data_cell">{{player.rush_td}}</td>
+                                        </tr>
+                                    </ng-container>
+                                    <tr class="data_rows">
+                                        <td><b>Team</b></td>   
+                                        <td><b>{{row.away_rush_att}}</b></td>
+                                        <td><b>{{row.away_rush}}</b></td>
+                                        <td><b>{{row.away_rush_td}}</b></td>
+                                    </tr> 
+                                </table>
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <td class="kicking">
+                                <table class="inner-table">
+                                    <thead>
+                                        {{row.away_team}} Field Goal Kicking
+                                    </thead>
+                                    <tr>
+                                        <td>name</td>
+                                        <td>att</td>
+                                        <td>made</td>
+                                    </tr>
+                                    <ng-container *ngFor="let player of gameData[i].gameLeaders.away_team.kicking"> 
+                                    <tr class="data_rows">
+                                        <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                        <td class="data_cell">{{player.field_goal_att}}</td>
+                                        <td class="data_cell">{{player.field_goal_made}}</td>
+                                    </tr>
+                                    </ng-container>
+                                </table>
+                            </td>
+                            <td class="Kick_Returns">
+                                <table class="inner-table">
+                                    <thead>
+                                        {{row.away_team}} Kick Returns
+                                    </thead>
+                                    <tr>
+                                        <td>name</td>
+                                        <td>ret</td>
+                                        <td>yrds</td>
+                                        <td>td</td>
+                                    </tr>
+                                    <ng-container *ngFor="let player of gameData[i].gameLeaders.away_team.kick_return">
+                                    <tr class="data_rows">
+                                        <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                        <td>{{player.kickoff_ret}}</td>
+                                        <td>{{player.kickoff_ret_yards}}</td>
+                                        <td>{{player.kickoff_ret_td}}</td>
+                                    </tr>
+                                    </ng-container>
+                                </table>
+                            </td>
+                            <td class="punt_returns">
+                                <table class="inner-table">
+                                    <thead>
+                                        {{row.away_team}} Punt Returns
+                                    </thead>
+                                    <tr>
+                                        <td>name</td>
+                                        <td>ret</td>
+                                        <td>yards</td>
+                                        <td>td</td>
+                                    </tr>
+                                    <ng-container *ngFor="let player of gameData[i].gameLeaders.away_team.punt">
+                                    <tr class="data_rows">
+                                        <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                        <td>{{player.punt_ret}}</td>
+                                        <td>{{player.punt_ret_yards}}</td>
+                                        <td>{{player.punt_ret_td}}</td>
+                                    </tr>    
+                                    </ng-container>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <table class="inner-table">
+                                    <thead>{{row.away_team}} Defense</thead>
+                                    <tr>
+                                        <td>name</td>
+                                        <td>tcle</td>
+                                        <td>tcle ass</td>
+                                        <td>tfl</td>
+                                        <td>sck</td>
+                                        <td>scky</td>
+                                        <td>qbh</td>
+                                        <td>pbkn</td>
+                                    </tr>
+                                    <ng-container *ngFor="let player of gameData[i].gameLeaders.away_team.defense">
+                                    <tr class="data_rows">
+                                        <td>{{player.first_name}} {{player.last_name}} -- {{player.position}}</td>
+                                        <td>{{player.tackle_solo}}</td>
+                                        <td>{{player.tackle_assist}}</td>
+                                        <td>{{player.tackle_forloss}}</td>
+                                        <td>{{player.sack}}</td>
+                                        <td>{{player.sack_yard}}</td>
+                                        <td>{{player.qb_hurry}}</td>
+                                        <td>{{player.pass_borken}}</td>
+                                    </tr>
+                                    </ng-container>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </ng-template>
+        </div>
+    </ng-container>
+</div>
+<ng-template #noData>
         <p>
             Please select a team and year to get information for.
         </p>
-    </ng-template>
-</ng-container>
+</ng-template>
+
