@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { NgForm } from '@angular/forms';
-import { from, Observable, BehaviorSubject } from 'rxjs';
-import { UserModel } from '../user.model';
-import { Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { AngularFireAuth } from "@angular/fire/auth";
+import { AngularFirestore } from "@angular/fire/firestore";
+import { NgForm } from "@angular/forms";
+import { from, Observable, BehaviorSubject } from "rxjs";
+import { UserModel } from "../user.model";
+import { Router } from "@angular/router";
 import { JwtHelperService } from "@auth0/angular-jwt";
 
 interface UserMetaData {
@@ -55,9 +55,9 @@ export interface UserCredential {
   message?: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class LoginService {
-  user = new BehaviorSubject<UserModel>(null);
+  public user = new BehaviorSubject<UserModel>(null);
   helper = new JwtHelperService();
   private tokenExpirationTimer: any;
 
@@ -71,22 +71,35 @@ export class LoginService {
     const email: string = form.value.email;
     const firstName: string = form.value.firstName;
     const lastName: string = form.value.lastName;
+    const zipCode: string = form.value.zipCode;
     return from(
       this.authService.auth
         .createUserWithEmailAndPassword(form.value.email, form.value.password)
         .then(result => {
           const id = this.angularFirestore.createId();
-          this.angularFirestore.collection('User').add({
+          this.angularFirestore.collection("User").add({
             email,
             firstName,
             lastName,
+            zipCode,
             id
           });
-          const helper = JSON.parse(JSON.stringify(this.authService.auth.currentUser));
+          const helper = JSON.parse(
+            JSON.stringify(this.authService.auth.currentUser)
+          );
           const myRawToken = helper.stsTokenManager.accessToken;
-          const expirationDate = new Date(this.helper.getTokenExpirationDate(myRawToken));
+          const expirationDate = new Date(
+            this.helper.getTokenExpirationDate(myRawToken)
+          );
           const uid = helper.uid;
-          this.handleAuthentication(email, uid, expirationDate, firstName, lastName);
+          this.handleAuthentication(
+            email,
+            uid,
+            expirationDate,
+            firstName,
+            lastName,
+            zipCode
+          );
           return result;
         })
         .catch(error => {
@@ -97,12 +110,16 @@ export class LoginService {
 
   login(form: NgForm): Observable<UserCredential> {
     const email = form.value.email;
-    const helper = JSON.parse(JSON.stringify(this.authService.auth.currentUser));
+    const helper = JSON.parse(
+      JSON.stringify(this.authService.auth.currentUser)
+    );
     const myRawToken = helper.stsTokenManager.accessToken;
     const uid = helper.uid;
-    const expirationDate = new Date(this.helper.getTokenExpirationDate(myRawToken));
-    // const isExpired = this.helper.isTokenExpired(myRawToken);
-    
+    const expirationDate = new Date(
+      this.helper.getTokenExpirationDate(myRawToken)
+    );
+    const isExpired = this.helper.isTokenExpired(myRawToken);
+
     return from(
       this.authService.auth
         .signInWithEmailAndPassword(email, form.value.password)
@@ -123,45 +140,66 @@ export class LoginService {
       _tokenExpirationDate: number;
       firstName?: string;
       lastName?: string;
-    } = JSON.parse(localStorage.getItem('userData'));
-    
+      zipCode?: string;
+    } = JSON.parse(localStorage.getItem("userData"));
+
     if (!userData) {
       return;
     }
     const loadedUser = new UserModel(
-      userData.email, 
+      userData.email,
       userData._uid,
-      new Date(userData._tokenExpirationDate), 
+      new Date(userData._tokenExpirationDate),
       userData.firstName,
-      userData.lastName
+      userData.lastName,
+      userData.zipCode
     );
     if (loadedUser.email) {
-      this.user.next(loadedUser)
-      const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime()
-      this.autoLogout(expirationDuration)
+      this.user.next(loadedUser);
+      const expirationDuration =
+        new Date(userData._tokenExpirationDate).getTime() -
+        new Date().getTime();
+      this.autoLogout(expirationDuration);
     }
   }
-  
+
   logout() {
     this.user.next(null);
-    this.router.navigate(['login']);
-    localStorage.removeItem('userData');
+    this.router.navigate(["login"]);
+    localStorage.removeItem("userData");
     if (this.tokenExpirationTimer) {
-      clearTimeout(this.tokenExpirationTimer)
+      clearTimeout(this.tokenExpirationTimer);
     }
     this.tokenExpirationTimer = null;
   }
-  
+
   autoLogout(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
-    }, expirationDuration)
+    }, expirationDuration);
   }
-  
-  private handleAuthentication(email: string, uid: string, expirationDate: Date, firstName?: string, lastName?: string) {
-    const user = new UserModel(email, uid, expirationDate, firstName, lastName);
+
+  private handleAuthentication(
+    email: string,
+    uid: string,
+    expirationDate: Date,
+    firstName?: string,
+    lastName?: string,
+    zipCode?: string
+  ) {
+    const user = new UserModel(
+      email,
+      uid,
+      expirationDate,
+      firstName,
+      lastName,
+      zipCode
+    );
     this.user.next(user);
-    this.autoLogout(new Date(expirationDate).getTime())
-    localStorage.setItem('userData', JSON.stringify(user))
+    // this.autoLogout(new Date(expirationDate).getTime());
+    localStorage.setItem("userData", JSON.stringify(user));
+  }
+  public getZipCode() {
+    return this.user.value.zipCode;
   }
 }

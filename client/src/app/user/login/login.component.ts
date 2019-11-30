@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { UserModel } from '../user.model';
-import { Observable, Subject } from 'rxjs';
-import { Router } from '@angular/router';
-import { LoginService, UserCredential } from './login.service';
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { UserModel } from "../user.model";
+import { Observable, Subject } from "rxjs";
+import { Router } from "@angular/router";
+import { LoginService, UserCredential } from "./login.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements OnInit {
   errorMessage: string = null;
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
       if (resData.message) {
         this.errorMessage = resData.message;
       } else {
-        this.router.navigate(['']);
+        this.router.navigate([""]);
       }
     });
     form.reset();
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
   }
   logout() {
     this.loginService.logout();
-    console.log('psh, logout?');
+    console.log("psh, logout?");
   }
 
   ngOnInit() {}

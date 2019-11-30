@@ -4,16 +4,15 @@ export class UserModel {
     private _uid: string,
     private _tokenExpirationDate: Date,
     public firstName?: string,
-    public lastName?: string
+    public lastName?: string,
+    public zipCode?: string
   ) {}
 
   get uid() {
-    console.log('new: ', this._tokenExpirationDate)
+    console.log("new: ", this._tokenExpirationDate);
     if (!this._tokenExpirationDate || new Date() > this._tokenExpirationDate) {
       return null;
     }
     return this._uid;
   }
-
-
 }

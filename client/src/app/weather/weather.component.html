@@ -1,14 +1,27 @@
 <h1>Weather forecast for {{ city }}</h1>
-<form>
-  City:
+<mat-form-field class="weather-form-field">
   <input
+    matInput
+    placeholder="City"
     type="text"
     required
     [(ngModel)]="toSearch"
     [ngModelOptions]="{ standalone: true }"
   />
-  <button (click)="getWeatherForecast()">Forecast</button>
-</form>
+  <button
+    mat-button
+    *ngIf="value"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="toSearch = ''"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+<button mat-button color="primary" (click)="getWeatherForecast()">
+  Forecast
+</button>
 <p style="color:red">{{ this.weatherError }}</p>
 
 <ng-container *ngIf="summary; else isSearching">

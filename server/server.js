@@ -1,61 +1,70 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
-const bodyParser = require('body-parser');
+const cors = require("cors");
+const bodyParser = require("body-parser");
 const port = process.env.PORT || 3000;
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
+
 
 const weatherAPI = require('./api/weather');
 const trimetAPI = require('./api/trimet');
-const {teamQuery, gameQuery, rushQuery, passQuery, recQuery, defQuery, kickQuery, puntReturnQuery, kickReturnQuery} = require('./api/football');
+const {teamQuery, 
+       gameQuery, 
+       rushQuery, 
+       passQuery, 
+       recQuery, 
+       defQuery, 
+       kickQuery, 
+       puntReturnQuery, 
+       kickReturnQuery} = require('./api/football');
 
-const path = require('path');
+
+const path = require("path");
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/api/weather', async (req, res) => {
+app.get("/api/weather", async (req, res) => {
   try {
-    const weatherData = await weatherAPI(req.query.city);
+    const weatherData = await weatherAPI(req.query.args);
     res.status(200).send({ weatherData });
   } catch (error) {
-    console.log('Weather Server Error');
-    res.status(500).send({ Error: 'Weather Server Error' });
+    console.log("Weather Server Error");
+    res.status(500).send({ Error: "Weather Server Error" });
   }
 });
 
-app.get('/api/trimet', async (req, res) => {
+app.get("/api/trimet", async (req, res) => {
   try {
     const trimetData = await trimetAPI(req.query.locations);
     res.status(200).send({ trimetData });
   } catch (error) {
-    console.log('Trimet server error', error);
-    res.status(500).send({ Error: 'Trimet server Error' });
+    console.log("Trimet server error", error);
+    res.status(500).send({ Error: "Trimet server Error" });
   }
 });
 
-app.get('/api/teams', async (req, res) => {
+app.get("/api/teams", async (req, res) => {
   teamQuery((err, rs) => {
-    if(err) {
+    if (err) {
       console.log("error");
     }
     res.status(200).send(rs.rows);
-  }
-  )
+  });
 });
 
-app.get('/api/games', async(req, res) => {
+app.get("/api/games", async (req, res) => {
   var team = req.query.team;
   var year = req.query.year;
-  var date1 = '8/1/' + year;
-  var date2 = '1/31/' + (+year + 1);
+  var date1 = "8/1/" + year;
+  var date2 = "1/31/" + (+year + 1);
   let games = await gameQuery([team, date1, date2]);
   res.status(200).send(games.rows);
 });
 
-app.get('/api/leaders', async(req, res) => {
+app.get("/api/leaders", async (req, res) => {
   var team = req.query.team;
   var game = req.query.game;
-  var leaders = {}
+  var leaders = {};
 
   var rush_leaders = await rushQuery([team, game]);
   var pass_leaders = await passQuery([team, game]);
@@ -77,9 +86,5 @@ app.get('/api/leaders', async(req, res) => {
   
   res.status(200).send(leaders);
 });
-
-
-
-
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
