@@ -5,8 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start": "npm run test-build",
-    "run-client": "cd ../client && npm install && npm start",
+    "run-client": "cd ../client && npm install && ng add && npm start",
     "test-build": "npm i && concurrently \"npm run dev\" \"npm run run-client\"",
+    "prod-client": "cd ../client && npm install && npm run prod",
+    "prod-build": "npm i && concurrently \"npm run prod\" \"npm run prod-client\"",
+    "prod": "node server.js",
     "dev": "nodemon server.js"
   },
   "author": "Theodore Vixay",
