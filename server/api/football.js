@@ -3,7 +3,7 @@ const { Client } = require('pg')
 const  client = new Client({
     user: 'postgres',
     host: 'localhost',
-    database: 'sample_cfb',
+    database: 'cfb_data',
     password: '1234'
 })
 client.connect()
@@ -19,7 +19,7 @@ var game_query = `SELECT
                     t1.name as home_team,
                     ts1.points as home_score, 
                     ts1.rush_yard as home_rush,
-                    ts1.rush_att as home_rush_att,
+                    ts1.rush_att as home_rush_att,  
                     ts1.rush_td as home_rush_td,
                     ts1.pass_yard as home_pass_yards,
                     ts1.pass_comp as home_pass_comp,

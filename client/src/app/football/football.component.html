@@ -1,7 +1,7 @@
 
 <h1>College Football Database!</h1>
 <h3>A detailed set of game and player statistics from 2005-2012.</h3>
-<h4>Please Select a Team: {{ team }} </h4>
+<h4>Please Select a Team</h4>
 <select (change)="selectedTeam($event.target.value)" ng-model="team">
     <option *ngFor="let team of teams">
         <span>{{team}}</span>
@@ -24,7 +24,13 @@
             </div>
         </div>
         <div class="game-data-box" *ngIf ="row.expanded">
-            <div class="date" (click)="row.home_team_data = !row.home_team_data">
+            <ng-container *ngIf="row.home_team_data; else away"> 
+                <button (click)="row.home_team_data = !row.home_team_data">Away Team Data</button>
+            </ng-container>
+            <ng-template #away> 
+                <button (click)="row.home_team_data = !row.home_team_data">Home Team Data</button>
+            </ng-template>
+            <div class="date">
                 <span>
                         {{row.stadium}} -- {{row.city}}, {{row.state}}
                 </span>
