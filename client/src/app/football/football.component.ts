@@ -14,7 +14,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class FootballComponent implements OnInit {
   teams : any = [];
   team: string;
-  years = ['2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013'];
+  years = ['2005', '2006', '2007', '2008', '2009', '2011', '2012', '2013'];
   year: string = this.years[0];
   received_data: Boolean = false;
   gameData: any = [];
