@@ -1,7 +1,8 @@
 
 <h1>College Football Database!</h1>
 <h3>A detailed set of game and player statistics from 2005-2012.</h3>
-<h4>Please Select a Team</h4>
+
+<br><br>
 <select (change)="selectedTeam($event.target.value)" ng-model="team">
     <option *ngFor="let team of teams">
         <span>{{team}}</span>
@@ -13,6 +14,8 @@
     </option>
 </select>
 <button (click)="getTeamsGames()">Get Game Data</button>
+<br>
+<br>
 <div class="main_box" *ngIf="received_data; else noData">
     <ng-container *ngFor="let row of gameData; let i=index">
         <div class="main-game-box" (click)="row.expanded = !row.expanded">
@@ -46,7 +49,7 @@
                             <table class="inner-table">
                                 <thead>{{row.home_team}} Passing</thead>
                                 <tr>
-				    <td>name</td>
+				                    <td>name</td>
                                     <td>cmp/att</td>
                                     <td>yrds</td>
                                     <td>tds</td>
@@ -137,10 +140,11 @@
                                     <td class="data_cell">{{player.field_goal_made}}</td>
                                 </tr>
                                 </ng-container>
-				<tr class="data">		            																						  <td><b>Team</b></td>
-				    <td><b>{{row.home_field_att}}</b></td>
-				    <td><b>{{row.home_field_made}}</b></td>
-			       </tr>
+				                <tr class="data_rows">		      
+                                    <td><b>Team</b></td>      																						  
+				                    <td><b>{{row.home_field_att}}</b></td>
+				                    <td><b>{{row.home_field_made}}</b></td>
+			                    </tr>
                             </table>
                         </td>
                         <td class="Kick_Returns">
@@ -162,10 +166,12 @@
                                     <td>{{player.kickoff_ret_td}}</td>
                                 </tr>
                                 </ng-container>
-				<tr class="data_rows">
-				    <td><b>Team</b></td>
-				    <td><b>{{row.home_kick_ret}}</b><b>
-				  
+				                <tr class="data_rows">		      
+                                    <td><b>Team</b></td>      																						  
+                                    <td><b>{{row.home_kick_ret}}</b></td>
+                                    <td><b>{{row.home_kick_yard}}</b></td>
+                                    <td><b>{{row.home_kick_td}}</b></td>
+                                </tr>
                             </table>
                         </td>
                         <td class="punt_returns">
@@ -187,6 +193,12 @@
                                     <td>{{player.punt_ret_td}}</td>
                                 </tr>    
                                 </ng-container>
+                                <tr class="data_rows">		      
+                                    <td><b>Team</b></td>      																						  
+                                    <td><b>{{row.home_punt_ret}}</b></td>
+                                    <td><b>{{row.home_punt_yard}}</b></td>
+                                    <td><b>{{row.home_punt_td}}</b></td>
+                                </tr>
                             </table>
 
                         </td>
@@ -217,6 +229,16 @@
                                     <td>{{player.pass_borken}}</td>
                                 </tr>
                                 </ng-container>
+                                <tr class="data_rows">
+                                    <td><b>Team</b></td>
+                                    <td><b>{{row.home_tackle_solo}}</b></td>
+                                    <td><b>{{row.home_tackle_ass}}</b></td>
+                                    <td><b>{{row.home_tfl}}</b></td>
+                                    <td><b>{{row.home_sack}}</b></td>
+                                    <td><b>{{row.home_sack_yard}}</b></td>
+                                    <td><b>{{row.home_qb_hurry}}</b></td>
+                                    <td><b>{{row.home_pass_broken}}</b></td>
+                                </tr>
                             </table>
                         </td>
                     </tr>
@@ -230,7 +252,7 @@
                                 <table class="inner-table">
                                     <thead>{{row.away_team}} Passing</thead>
                                     <tr>
-                                    <td><strong>name</strong></td>
+                                        <td>name</td>
                                         <td>cmp/att</td>
                                         <td>yrds</td>
                                         <td>tds</td>
@@ -294,7 +316,7 @@
                                         </tr>
                                     </ng-container>
                                     <tr class="data_rows">
-                                        <td><b>Team</b></td>   
+                                        <td><b>Team</b></td>
                                         <td><b>{{row.away_rush_att}}</b></td>
                                         <td><b>{{row.away_rush}}</b></td>
                                         <td><b>{{row.away_rush_td}}</b></td>
@@ -320,6 +342,11 @@
                                         <td class="data_cell">{{player.field_goal_made}}</td>
                                     </tr>
                                     </ng-container>
+                                    <tr class="data_rows">		      
+                                        <td><b>Team</b></td>      																						  
+                                        <td><b>{{row.away_field_att}}</b></td>
+                                        <td><b>{{row.away_field_made}}</b></td>
+                                    </tr>
                                 </table>
                             </td>
                             <td class="Kick_Returns">
@@ -341,6 +368,12 @@
                                         <td>{{player.kickoff_ret_td}}</td>
                                     </tr>
                                     </ng-container>
+                                    <tr class="data_rows">		      
+                                        <td><b>Team</b></td>      																						  
+                                        <td><b>{{row.away_kick_ret}}</b></td>
+                                        <td><b>{{row.away_kick_yard}}</b></td>
+                                        <td><b>{{row.away_kick_td}}</b></td>
+                                    </tr>
                                 </table>
                             </td>
                             <td class="punt_returns">
@@ -362,6 +395,12 @@
                                         <td>{{player.punt_ret_td}}</td>
                                     </tr>    
                                     </ng-container>
+                                    <tr class="data_rows">		      
+                                        <td><b>Team</b></td>      																						  
+                                        <td><b>{{row.away_punt_ret}}</b></td>
+                                        <td><b>{{row.away_punt_yard}}</b></td>
+                                        <td><b>{{row.away_punt_td}}</b></td>
+                                    </tr>
                                 </table>
                             </td>
                         </tr>
@@ -391,6 +430,16 @@
                                         <td>{{player.pass_borken}}</td>
                                     </tr>
                                     </ng-container>
+                                    <tr class="data_rows">
+                                        <td><b>Team</b></td>
+                                        <td><b>{{row.home_tackle_solo}}</b></td>
+                                        <td><b>{{row.home_tackle_ass}}</b></td>
+                                        <td><b>{{row.home_tfl}}</b></td>
+                                        <td><b>{{row.home_sack}}</b></td>
+                                        <td><b>{{row.home_sack_yard}}</b></td>
+                                        <td><b>{{row.home_qb_hurry}}</b></td>
+                                        <td><b>{{row.home_pass_broken}}</b></td>
+                                    </tr>
                                 </table>
                             </td>
                         </tr>
@@ -401,8 +450,9 @@
     </ng-container>
 </div>
 <ng-template #noData>
+        <br>
         <p>
-            Please select a team and year to get information for.
+            Please select a team and year.
         </p>
 </ng-template>
 
